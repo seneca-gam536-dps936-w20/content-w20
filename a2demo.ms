@@ -1,4 +1,80 @@
 struct Turtle(
+
+	position_=[0,0,0],   -- where is turtle initially at origin
+	heading_=[0,0,1],    -- unit length vector pointing to where turtle is going
+	lineLength_=100,
+	turnAngle_=60,
+	rotationQuat_=quat 0 0 0 1,  --identity quaternion (0 degreen turn)
+
+	fn drawA =(
+		c = cone radius1:20 radius2:0 height:lineLength_
+		rotate c rotationQuat_
+		move c position_
+		position_=((lineLength_*heading_) + position_)
+	),
+	fn drawB =(
+		c = cone radius1:20 radius2:0 height:lineLength_
+		rotate c rotationQuat_
+		move c position_
+		position_=((lineLength_*heading_) + position_)
+
+	),
+	fn drawPlus =(
+		q = quat turnAngle_ [0,1,0]
+		rotationQuat_=q * rotationQuat_
+		invq =inverse q
+		heading_ = heading_ * invq
+	),
+	fn drawMinus =(
+		q = quat -turnAngle_ [0,1,0]
+		rotationQuat_=q * rotationQuat_
+		invq =inverse q
+		heading_ = heading_ * invq
+
+	)
+)
+
+fn draw codeString = (
+	-- This is hardcoded for the codeString
+	-- A+B+A-B-A-B-A+B+A
+
+	t = Turtle()
+
+	t.drawA()
+	t.drawPlus()
+	t.drawB()
+	t.drawPlus()
+	t.drawA()
+
+	t.drawMinus()
+
+	t.drawB()
+	t.drawMinus()
+	t.drawA()
+	t.drawMinus()
+	t.drawB()
+
+
+	t.drawMinus()
+
+	t.drawA()
+	t.drawPlus()
+	t.drawB()
+	t.drawPlus()
+	t.drawA()
+
+)
+fn main=(
+	delete objects
+	draw("")
+)
+
+main()
+
+
+
+
+struct Turtle(
 	position = [0,0,0],
 	heading = [0,0,1],    -- unit length vector
 	len = 100,
